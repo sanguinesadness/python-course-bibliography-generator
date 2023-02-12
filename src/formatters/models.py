@@ -7,6 +7,30 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 
+class JournalArticleModel(BaseModel):
+    """
+    Модель статьи из журнала:
+
+    .. code-block::
+
+        JournalArticleModel(
+            authors="Иванов И.М., Петров С.Н.",
+            article_title="Способы оценки научных результатов",
+            journal_title="Наука как искусство",
+            year=2020,
+            pages="25-30",
+            journal_number=1
+        )
+    """
+
+    authors: str
+    article_title: str
+    journal_title: str
+    year: int = Field(..., gt=0)
+    journal_number: int = Field(..., gt=0)
+    pages: str
+
+
 class BookModel(BaseModel):
     """
     Модель книги:
@@ -54,7 +78,6 @@ class InternetResourceModel(BaseModel):
 
 
 class ArticlesCollectionModel(BaseModel):
-
     """
     Модель сборника статей:
 
