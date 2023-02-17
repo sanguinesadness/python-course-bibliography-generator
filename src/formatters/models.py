@@ -7,6 +7,34 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 
+class AbstractModel(BaseModel):
+    """
+    Модель автореферата к диссертации:
+
+    .. code-block::
+
+        AbstractModel(
+            authors="Иванов И.М.",
+            dissertation_title="Наука как искусство",
+            degree="д-р. / канд.",
+            field="экон.",
+            specialty_code="01.01.01",
+            city="СПб.",
+            year="2020",
+            pages="199"
+        )
+    """
+
+    authors: str
+    dissertation_title: str
+    degree: str
+    field: str
+    specialty_code: str
+    city: str
+    year: int = Field(..., gt=0)
+    pages: int = Field(..., ft=0)
+
+
 class JournalArticleModel(BaseModel):
     """
     Модель статьи из журнала:
