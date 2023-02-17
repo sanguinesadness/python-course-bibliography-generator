@@ -6,7 +6,7 @@ from string import Template
 from pydantic import BaseModel
 
 from formatters.models import BookModel, InternetResourceModel,\
-    ArticlesCollectionModel, JournalArticleModel, AbstractModel
+    ArticlesCollectionModel, MagazineArticleModel, AbstractModel
 from formatters.styles.base import BaseCitationStyle
 from logger import get_logger
 
@@ -40,17 +40,18 @@ class GOSTAbstract(BaseCitationStyle):
             pages=self.data.pages
         )
 
-class GOSTJournalArticle(BaseCitationStyle):
+
+class GOSTMagazineArticle(BaseCitationStyle):
     """
     Форматирование для статей из журналов.
     """
 
-    data: JournalArticleModel
+    data: MagazineArticleModel
 
     @property
     def template(self) -> Template:
         return Template(
-            "$authors $article_title // $journal_title. $year. №$journal_number. $pages."
+            "$authors $article_title // $magazine_title. $year. №$magazine_number. $pages."
         )
 
     def substitute(self) -> str:
@@ -59,9 +60,9 @@ class GOSTJournalArticle(BaseCitationStyle):
         return self.template.substitute(
             authors=self.data.authors,
             article_title=self.data.article_title,
-            journal_title=self.data.journal_title,
+            magazine_title=self.data.magazine_title,
             year=self.data.year,
-            journal_number=self.data.journal_number,
+            magazine_number=self.data.magazine_number,
             pages=self.data.pages
         )
 
@@ -162,7 +163,7 @@ class GOSTCitationFormatter:
         BookModel.__name__: GOSTBook,
         InternetResourceModel.__name__: GOSTInternetResource,
         ArticlesCollectionModel.__name__: GOSTCollectionArticle,
-        JournalArticleModel.__name__: GOSTJournalArticle,
+        MagazineArticleModel.__name__: GOSTMagazineArticle,
         AbstractModel.__name__: GOSTAbstract
     }
 

@@ -7,7 +7,7 @@ from typing import Type
 import openpyxl
 from openpyxl.workbook import Workbook
 
-from formatters.models import BookModel, InternetResourceModel, ArticlesCollectionModel, JournalArticleModel, AbstractModel
+from formatters.models import BookModel, InternetResourceModel, ArticlesCollectionModel, MagazineArticleModel, AbstractModel
 from logger import get_logger
 from readers.base import BaseReader
 
@@ -42,14 +42,14 @@ class AbstractReader(BaseReader):
         }
 
 
-class JournalArticleReader(BaseReader):
+class MagazineArticleReader(BaseReader):
     """
     Чтение модели статьи из журнала.
     """
 
     @property
-    def model(self) -> Type[JournalArticleModel]:
-        return JournalArticleModel
+    def model(self) -> Type[MagazineArticleModel]:
+        return MagazineArticleModel
 
     @property
     def sheet(self) -> str:
@@ -60,9 +60,9 @@ class JournalArticleReader(BaseReader):
         return {
             "authors": {0: str},
             "article_title": {1: str},
-            "journal_title": {2: str},
+            "magazine_title": {2: str},
             "year": {3: int},
-            "journal_number": {4: int},
+            "magazine_number": {4: int},
             "pages": {5: str}
         }
 
@@ -152,7 +152,7 @@ class SourcesReader:
         BookReader,
         InternetResourceReader,
         ArticlesCollectionReader,
-        JournalArticleReader,
+        MagazineArticleReader,
         AbstractReader
     ]
 

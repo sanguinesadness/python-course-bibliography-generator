@@ -35,27 +35,27 @@ class AbstractModel(BaseModel):
     pages: int = Field(..., ft=0)
 
 
-class JournalArticleModel(BaseModel):
+class MagazineArticleModel(BaseModel):
     """
     Модель статьи из журнала:
 
     .. code-block::
 
-        JournalArticleModel(
+        MagazineArticleModel(
             authors="Иванов И.М., Петров С.Н.",
             article_title="Способы оценки научных результатов",
-            journal_title="Наука как искусство",
+            magazine_title="Наука как искусство",
             year=2020,
             pages="25-30",
-            journal_number=1
+            magazine_number=1
         )
     """
 
     authors: str
     article_title: str
-    journal_title: str
+    magazine_title: str
     year: int = Field(..., gt=0)
-    journal_number: int = Field(..., gt=0)
+    magazine_number: int = Field(..., gt=0)
     pages: str
 
 
