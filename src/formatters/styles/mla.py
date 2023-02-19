@@ -5,8 +5,12 @@ from string import Template
 
 from pydantic import BaseModel
 
-from formatters.models import BookModel, InternetResourceModel, \
-    ArticlesCollectionModel, MagazineArticleModel, AbstractModel
+from formatters.models import (
+    BookModel,
+    InternetResourceModel,
+    MagazineArticleModel,
+    AbstractModel,
+)
 from formatters.styles.base import BaseCitationStyle
 from logger import get_logger
 
@@ -27,7 +31,10 @@ class MLAAbstract(BaseCitationStyle):
         )
 
     def substitute(self) -> str:
-        logger.info('[MLA] Форматирование автореферата к диссертации "%s" ...', self.data.dissertation_title)
+        logger.info(
+            '[MLA] Форматирование автореферата к диссертации "%s" ...',
+            self.data.dissertation_title,
+        )
 
         return self.template.substitute(
             authors=self.data.authors,
@@ -37,7 +44,7 @@ class MLAAbstract(BaseCitationStyle):
             specialty_code=self.data.specialty_code,
             city=self.data.city,
             year=self.data.year,
-            pages=self.data.pages
+            pages=self.data.pages,
         )
 
 
@@ -55,7 +62,9 @@ class MLAMagazineArticle(BaseCitationStyle):
         )
 
     def substitute(self) -> str:
-        logger.info('[MLA] Форматирование статьи из журнала "%s" ...', self.data.article_title)
+        logger.info(
+            '[MLA] Форматирование статьи из журнала "%s" ...', self.data.article_title
+        )
 
         return self.template.substitute(
             authors=self.data.authors,
@@ -63,7 +72,7 @@ class MLAMagazineArticle(BaseCitationStyle):
             magazine_title=self.data.magazine_title,
             year=self.data.year,
             magazine_number=self.data.magazine_number,
-            pages=self.data.pages
+            pages=self.data.pages,
         )
 
 
@@ -76,9 +85,7 @@ class MLABook(BaseCitationStyle):
 
     @property
     def template(self) -> Template:
-        return Template(
-            '$authors. $title. $city, $publishing_house, $year.'
-        )
+        return Template("$authors. $title. $city, $publishing_house, $year.")
 
     def substitute(self) -> str:
         logger.info('[MLA] Форматирование книги "%s" ...', self.data.title)
@@ -112,9 +119,7 @@ class MLAInternetResource(BaseCitationStyle):
 
     @property
     def template(self) -> Template:
-        return Template(
-            '"$article." $website, $link.'
-        )
+        return Template('"$article." $website, $link.')
 
     def substitute(self) -> str:
         logger.info('[MLA] Форматирование интернет-ресурса "%s" ...', self.data.article)
@@ -136,7 +141,7 @@ class MLACitationFormatter:
         BookModel.__name__: MLABook,
         InternetResourceModel.__name__: MLAInternetResource,
         MagazineArticleModel.__name__: MLAMagazineArticle,
-        AbstractModel.__name__: MLAAbstract
+        AbstractModel.__name__: MLAAbstract,
     }
 
     def __init__(self, models: list[BaseModel]) -> None:

@@ -85,9 +85,7 @@ def process_input(
     elif citation == CitationEnum.MLA.name:
         formatter = MLACitationFormatter(models)
 
-    formatted_models = tuple(
-        str(item) for item in formatter.format()
-    )
+    formatted_models = tuple(str(item) for item in formatter.format())
 
     logger.info("Генерация выходного файла ...")
     Renderer(formatted_models).render(path_output)

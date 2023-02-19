@@ -5,8 +5,13 @@ from string import Template
 
 from pydantic import BaseModel
 
-from formatters.models import BookModel, InternetResourceModel,\
-    ArticlesCollectionModel, MagazineArticleModel, AbstractModel
+from formatters.models import (
+    BookModel,
+    InternetResourceModel,
+    ArticlesCollectionModel,
+    MagazineArticleModel,
+    AbstractModel,
+)
 from formatters.styles.base import BaseCitationStyle
 from logger import get_logger
 
@@ -27,7 +32,10 @@ class GOSTAbstract(BaseCitationStyle):
         )
 
     def substitute(self) -> str:
-        logger.info('[ГОСТ] Форматирование автореферата к диссертации "%s" ...', self.data.dissertation_title)
+        logger.info(
+            '[ГОСТ] Форматирование автореферата к диссертации "%s" ...',
+            self.data.dissertation_title,
+        )
 
         return self.template.substitute(
             authors=self.data.authors,
@@ -37,7 +45,7 @@ class GOSTAbstract(BaseCitationStyle):
             specialty_code=self.data.specialty_code,
             city=self.data.city,
             year=self.data.year,
-            pages=self.data.pages
+            pages=self.data.pages,
         )
 
 
@@ -55,7 +63,9 @@ class GOSTMagazineArticle(BaseCitationStyle):
         )
 
     def substitute(self) -> str:
-        logger.info('[ГОСТ] Форматирование статьи из журнала "%s" ...', self.data.article_title)
+        logger.info(
+            '[ГОСТ] Форматирование статьи из журнала "%s" ...', self.data.article_title
+        )
 
         return self.template.substitute(
             authors=self.data.authors,
@@ -63,7 +73,7 @@ class GOSTMagazineArticle(BaseCitationStyle):
             magazine_title=self.data.magazine_title,
             year=self.data.year,
             magazine_number=self.data.magazine_number,
-            pages=self.data.pages
+            pages=self.data.pages,
         )
 
 
@@ -117,7 +127,9 @@ class GOSTInternetResource(BaseCitationStyle):
         )
 
     def substitute(self) -> str:
-        logger.info('[ГОСТ] Форматирование интернет-ресурса "%s" ...', self.data.article)
+        logger.info(
+            '[ГОСТ] Форматирование интернет-ресурса "%s" ...', self.data.article
+        )
 
         return self.template.substitute(
             article=self.data.article,
@@ -141,7 +153,9 @@ class GOSTCollectionArticle(BaseCitationStyle):
         )
 
     def substitute(self) -> str:
-        logger.info('[ГОСТ] Форматирование сборника статей "%s" ...', self.data.article_title)
+        logger.info(
+            '[ГОСТ] Форматирование сборника статей "%s" ...', self.data.article_title
+        )
 
         return self.template.substitute(
             authors=self.data.authors,
@@ -164,7 +178,7 @@ class GOSTCitationFormatter:
         InternetResourceModel.__name__: GOSTInternetResource,
         ArticlesCollectionModel.__name__: GOSTCollectionArticle,
         MagazineArticleModel.__name__: GOSTMagazineArticle,
-        AbstractModel.__name__: GOSTAbstract
+        AbstractModel.__name__: GOSTAbstract,
     }
 
     def __init__(self, models: list[BaseModel]) -> None:
