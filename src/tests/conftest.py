@@ -3,14 +3,20 @@
 """
 import pytest
 
-from formatters.models import BookModel, InternetResourceModel, ArticlesCollectionModel, MagazineArticleModel, AbstractModel
+from formatters.models import (
+    BookModel,
+    InternetResourceModel,
+    ArticlesCollectionModel,
+    MagazineArticleModel,
+    AbstractModel,
+)
 
 
 @pytest.fixture()
 def abstract_model_fixture() -> AbstractModel:
     """
     Фикстура автореферата к диссертации.
-    
+
     :return: BookModel
     """
 
@@ -22,7 +28,7 @@ def abstract_model_fixture() -> AbstractModel:
         specialty_code="01.01.01",
         city="СПб.",
         year="2020",
-        pages="199"
+        pages="199",
     )
 
 
@@ -40,8 +46,9 @@ def magazine_article_model_fixture() -> MagazineArticleModel:
         magazine_title="Образование и наука",
         year="2020",
         magazine_number="10",
-        pages="25-30"
+        pages="25-30",
     )
+
 
 @pytest.fixture
 def book_model_fixture() -> BookModel:

@@ -1,27 +1,25 @@
 """
-Тестирование функций оформления списка источников по ГОСТ Р 7.0.5-2008.
+Тестирование функций оформления списка источников по MLA 9th Edition.
 """
 
 from formatters.base import BaseCitationFormatter
 from formatters.models import (
     BookModel,
     InternetResourceModel,
-    ArticlesCollectionModel,
     AbstractModel,
     MagazineArticleModel,
 )
-from formatters.styles.gost import (
-    GOSTBook,
-    GOSTInternetResource,
-    GOSTCollectionArticle,
-    GOSTAbstract,
-    GOSTMagazineArticle,
+from formatters.styles.mla import (
+    MLABook,
+    MLAInternetResource,
+    MLAAbstract,
+    MLAMagazineArticle,
 )
 
 
-class TestGOST:
+class TestMLA:
     """
-    Тестирование оформления списка источников согласно ГОСТ Р 7.0.5-2008.
+    Тестирование оформления списка источников согласно MLA 9th Edition.
     """
 
     def test_abstract(self, abstract_model_fixture: AbstractModel) -> None:
@@ -32,11 +30,11 @@ class TestGOST:
         :return:
         """
 
-        model = GOSTAbstract(abstract_model_fixture)
+        model = MLAAbstract(abstract_model_fixture)
 
         assert (
             model.formatted
-            == "Иванов И.М. Наука как искусство: автореф. дис. ... д-р. / канд.: 01.01.01. экон. СПб., 2020. 199 с."
+            == 'Иванов И.М. Abstract of "Наука как искусство." экон., p. 199, 2020.'
         )
 
     def test_magazine_article(
@@ -49,11 +47,11 @@ class TestGOST:
         :return:
         """
 
-        model = GOSTMagazineArticle(magazine_article_model_fixture)
+        model = MLAMagazineArticle(magazine_article_model_fixture)
 
         assert (
             model.formatted
-            == "Иванов И.М., Петров С.Н. Наука как искусство // Образование и наука. 2020. №10. 25-30."
+            == 'Иванов И.М., Петров С.Н. "Наука как искусство." Образование и наука, no. 10, 2020, pp. 25-30.'
         )
 
     def test_book(self, book_model_fixture: BookModel) -> None:
@@ -64,11 +62,11 @@ class TestGOST:
         :return:
         """
 
-        model = GOSTBook(book_model_fixture)
+        model = MLABook(book_model_fixture)
 
         assert (
             model.formatted
-            == "Иванов И.М., Петров С.Н. Наука как искусство. – 3-е изд. – СПб.: Просвещение, 2020. – 999 с."
+            == 'Иванов И.М., Петров С.Н. "Наука как искусство." СПб., Просвещение, 2020.'
         )
 
     def test_internet_resource(
@@ -81,35 +79,17 @@ class TestGOST:
         :return:
         """
 
-        model = GOSTInternetResource(internet_resource_model_fixture)
+        model = MLAInternetResource(internet_resource_model_fixture)
 
         assert (
             model.formatted
-            == "Наука как искусство // Ведомости URL: https://www.vedomosti.ru (дата обращения: 01.01.2021)."
-        )
-
-    def test_articles_collection(
-        self, articles_collection_model_fixture: ArticlesCollectionModel
-    ) -> None:
-        """
-        Тестирование форматирования сборника статей.
-
-        :param ArticlesCollectionModel articles_collection_model_fixture: Фикстура модели сборника статей
-        :return:
-        """
-
-        model = GOSTCollectionArticle(articles_collection_model_fixture)
-
-        assert (
-            model.formatted
-            == "Иванов И.М., Петров С.Н. Наука как искусство // Сборник научных трудов. – СПб.: АСТ, 2020. – С. 25-30."
+            == '"Наука как искусство." Ведомости, https://www.vedomosti.ru.'
         )
 
     def test_citation_formatter(
         self,
         book_model_fixture: BookModel,
         internet_resource_model_fixture: InternetResourceModel,
-        articles_collection_model_fixture: ArticlesCollectionModel,
         abstract_model_fixture: AbstractModel,
         magazine_article_model_fixture: MagazineArticleModel,
     ) -> None:
@@ -118,7 +98,6 @@ class TestGOST:
 
         :param BookModel book_model_fixture: Фикстура модели книги
         :param InternetResourceModel internet_resource_model_fixture: Фикстура модели интернет-ресурса
-        :param ArticlesCollectionModel articles_collection_model_fixture: Фикстура модели сборника статей
         :param AbstractModel abstract_model_fixture: Фикстура модели автореферата к диссертации
         :param MagazineArticleModel magazine_article_model_fixture: Фикстура модели статьи из журнала
 
@@ -126,17 +105,15 @@ class TestGOST:
         """
 
         models = [
-            GOSTBook(book_model_fixture),
-            GOSTInternetResource(internet_resource_model_fixture),
-            GOSTCollectionArticle(articles_collection_model_fixture),
-            GOSTAbstract(abstract_model_fixture),
-            GOSTMagazineArticle(magazine_article_model_fixture),
+            MLABook(book_model_fixture),
+            MLAInternetResource(internet_resource_model_fixture),
+            MLAAbstract(abstract_model_fixture),
+            MLAMagazineArticle(magazine_article_model_fixture),
         ]
         result = BaseCitationFormatter(models).format()
 
         # тестирование сортировки списка источников
-        assert result[0] == models[3]
-        assert result[1] == models[4]
-        assert result[2] == models[2]
+        assert result[0] == models[1]
+        assert result[1] == models[2]
+        assert result[2] == models[3]
         assert result[3] == models[0]
-        assert result[4] == models[1]

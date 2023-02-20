@@ -27,7 +27,7 @@ class MLAAbstract(BaseCitationStyle):
     @property
     def template(self) -> Template:
         return Template(
-            '$authors. Abstract of "$dissertation_title." $field, p. $pages, $year.'
+            '$authors Abstract of "$dissertation_title." $field, p. $pages, $year.'
         )
 
     def substitute(self) -> str:
@@ -58,7 +58,7 @@ class MLAMagazineArticle(BaseCitationStyle):
     @property
     def template(self) -> Template:
         return Template(
-            '$authors. "$article_title." $magazine_title, no. $magazine_number, $year, pp. $pages.'
+            '$authors "$article_title." $magazine_title, no. $magazine_number, $year, pp. $pages.'
         )
 
     def substitute(self) -> str:
@@ -85,7 +85,7 @@ class MLABook(BaseCitationStyle):
 
     @property
     def template(self) -> Template:
-        return Template("$authors. $title. $city, $publishing_house, $year.")
+        return Template('$authors "$title." $city, $publishing_house, $year.')
 
     def substitute(self) -> str:
         logger.info('[MLA] Форматирование книги "%s" ...', self.data.title)
