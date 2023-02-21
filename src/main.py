@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Запуск приложения.
 """
@@ -6,6 +7,7 @@ from enum import Enum, unique
 import click
 
 from formatters.styles.gost import GOSTCitationFormatter
+from formatters.styles.mla import MLACitationFormatter
 from logger import get_logger
 from readers.reader import SourcesReader
 from renderer import Renderer
@@ -22,7 +24,6 @@ class CitationEnum(Enum):
 
     GOST = "gost"  # ГОСТ Р 7.0.5-2008
     MLA = "mla"  # Modern Language Association
-    APA = "apa"  # American Psychological Association
 
 
 @click.command()
@@ -77,9 +78,14 @@ def process_input(
     )
 
     models = SourcesReader(path_input).read()
-    formatted_models = tuple(
-        str(item) for item in GOSTCitationFormatter(models).format()
-    )
+
+    formatter = None
+    if citation == CitationEnum.GOST.name:
+        formatter = GOSTCitationFormatter(models)
+    elif citation == CitationEnum.MLA.name:
+        formatter = MLACitationFormatter(models)
+
+    formatted_models = tuple(str(item) for item in formatter.format())
 
     logger.info("Генерация выходного файла ...")
     Renderer(formatted_models).render(path_output)
